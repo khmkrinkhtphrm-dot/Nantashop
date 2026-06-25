@@ -7,6 +7,11 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 import { pool } from "@workspace/db";
 import { tokenAuthMiddleware } from "./middlewares/tokenAuth";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app: Express = express();
 
@@ -73,5 +78,16 @@ app.use(
 app.use(tokenAuthMiddleware);
 
 app.use("/api", router);
+
+// Serve static frontend files in production
+if (process.env.NODE_ENV === "production") {
+  const publicPath = path.resolve(__dirname, "../../game-shop/dist/public");
+  app.use(express.static(publicPath));
+  
+  // Handle SPA routing: serve index.html for any unknown routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
+  });
+}
 
 export default app;
