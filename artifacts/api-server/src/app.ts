@@ -89,12 +89,16 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(publicPath));
   
   // Handle SPA routing: serve index.html for any unknown routes
-  // Express 5 requires named parameters for wildcards
-  app.get("(.*)", (req, res) => {
-    res.sendFile(path.join(publicPath, "index.html"), (err) => {
+  // Express 5: using '*' or a named parameter like ':path*' is more standard
+  app.get("*", (req, res) => {
+    const indexPath = path.join(publicPath, "index.html");
+    res.sendFile(indexPath, (err) => {
       if (err) {
-        logger.error(err, "Failed to serve index.html");
-        res.status(500).send("Frontend not found. Please ensure the build command is correct.");
+        // Only log error if it's not a 'file not found' for common assets
+        if (!req.url.includes('.')) {
+          logger.error({ err, path: indexPath }, "Failed to serve index.html");
+        }
+        res.status(404).send("Frontend assets not found. Please ensure the build command is correct.");
       }
     });
   });
