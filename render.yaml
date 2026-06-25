@@ -9,18 +9,30 @@ services:
     envVars:
       - key: DATABASE_URL
         sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ
+      - key: SESSION_SECRET
+        sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ (ใช้สำหรับ Session security)
+      - key: PORT
+        value: "5000"
       - key: NODE_VERSION
         value: 20
+      - key: NODE_ENV
+        value: production
 
   # Frontend (Static Site)
   - type: static
     name: nantashop-web
     runtime: static
-    buildCommand: npm install -g pnpm && pnpm install && pnpm build
-    publishDir: dist
-    rootContext: artifacts/game-shop
+    buildCommand: npm install -g pnpm && pnpm install && PORT=5000 BASE_PATH=/ pnpm build
+    publishDir: artifacts/game-shop/dist/public
+    rootContext: .
     envVars:
       - key: VITE_API_URL
-        sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ
+        sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ (เช่น https://nantashop-api.onrender.com)
+      - key: PORT
+        value: "5000"
+      - key: BASE_PATH
+        value: "/"
       - key: NODE_VERSION
         value: 20
+      - key: NODE_ENV
+        value: production
