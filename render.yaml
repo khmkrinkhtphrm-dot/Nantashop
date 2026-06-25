@@ -19,11 +19,10 @@ services:
         value: production
 
   # Frontend (Static Site)
-  - type: web
+  - type: static
     name: nantashop-web
-    runtime: static
     buildCommand: npm install -g pnpm && pnpm install && PORT=5000 BASE_PATH=/ pnpm build
-    staticPublishDir: artifacts/game-shop/dist/public
+    publishDir: artifacts/game-shop/dist/public
     envVars:
       - key: VITE_API_URL
         sync: false
