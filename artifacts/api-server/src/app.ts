@@ -82,12 +82,21 @@ app.use("/api", router);
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {
   const publicPath = path.resolve(__dirname, "../../game-shop/dist/public");
+  
+  // Debug: Log the path being used
+  logger.info({ publicPath }, "Serving static files from");
+  
   app.use(express.static(publicPath));
   
   // Handle SPA routing: serve index.html for any unknown routes
   // Express 5 requires named parameters for wildcards
   app.get("(.*)", (req, res) => {
-    res.sendFile(path.join(publicPath, "index.html"));
+    res.sendFile(path.join(publicPath, "index.html"), (err) => {
+      if (err) {
+        logger.error(err, "Failed to serve index.html");
+        res.status(500).send("Frontend not found. Please ensure the build command is correct.");
+      }
+    });
   });
 }
 
