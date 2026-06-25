@@ -85,7 +85,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(publicPath));
   
   // Handle SPA routing: serve index.html for any unknown routes
-  app.get("*", (req, res) => {
+  // Express 5 requires named parameters for wildcards
+  app.get("(.*)", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
   });
 }
