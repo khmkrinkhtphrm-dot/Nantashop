@@ -1,0 +1,42 @@
+import { Router, type IRouter } from "express";
+import healthRouter from "./health";
+import authRouter from "./auth";
+import settingsRouter from "./settings";
+import slidersRouter from "./sliders";
+import bankConfigsRouter from "./bank-configs";
+import walletConfigsRouter from "./wallet-configs";
+import categoriesRouter from "./categories";
+import productsRouter from "./products";
+import ordersRouter from "./orders";
+import slipVerifyRouter from "./slip-verify";
+import redeemCodesRouter from "./redeem-codes";
+import quickLinksRouter from "./quick-links";
+import usersRouter from "./users";
+import newsRouter from "./news";
+import stocksRouter from "./stocks";
+import angpaoRouter from "./angpao";
+import topupsRouter from "./topups";
+import adminStatsRouter from "./admin-stats";
+
+const router: IRouter = Router();
+
+router.use(healthRouter);
+router.use(authRouter);
+router.use(settingsRouter);
+router.use(slidersRouter);
+router.use(bankConfigsRouter);
+router.use(walletConfigsRouter);
+router.use(categoriesRouter);
+router.use(productsRouter);
+router.use(ordersRouter);
+router.use(slipVerifyRouter);
+router.use(redeemCodesRouter);
+router.use(quickLinksRouter);
+router.use(usersRouter);
+router.use(newsRouter);
+router.use(stocksRouter);
+router.use(angpaoRouter);
+router.use(topupsRouter);
+router.use(adminStatsRouter);
+
+export default router;

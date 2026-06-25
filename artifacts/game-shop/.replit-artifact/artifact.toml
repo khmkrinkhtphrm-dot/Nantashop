@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "NantaShop"
+version = "1.0.0"
+id = "artifacts/game-shop"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25529
+
+[services.development]
+run = "pnpm --filter @workspace/game-shop run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/game-shop", "run", "build" ]
+publicDir = "artifacts/game-shop/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25529"
+BASE_PATH = "/"
