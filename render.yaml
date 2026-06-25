@@ -1,0 +1,26 @@
+services:
+  # API Server (Backend)
+  - type: web
+    name: nantashop-api
+    runtime: node
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    rootContext: artifacts/api-server
+    envVars:
+      - key: DATABASE_URL
+        sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ
+      - key: NODE_VERSION
+        value: 20
+
+  # Frontend (Static Site)
+  - type: static
+    name: nantashop-web
+    runtime: static
+    buildCommand: npm install -g pnpm && pnpm install && pnpm build
+    publishDir: dist
+    rootContext: artifacts/game-shop
+    envVars:
+      - key: VITE_API_URL
+        sync: false # ผู้ใช้ต้องใส่เองในหน้าเว็บ
+      - key: NODE_VERSION
+        value: 20
